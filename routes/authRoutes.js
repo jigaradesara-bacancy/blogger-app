@@ -1,4 +1,6 @@
 const passport = require('passport');
+const mongoose = require('mongoose');
+const cleanCache = require('../middlewares/clearCache');
 
 module.exports = app => {
   app.get(
@@ -16,12 +18,13 @@ module.exports = app => {
     }
   );
 
-  app.get('/auth/logout', (req, res) => {
+  app.get('/auth/logout', cleanCache,(req, res) => {
     req.logout();
     res.redirect('/');
   });
 
-  app.get('/api/current_user', (req, res) => {
+  app.get('/api/current_user', async(req, res) => {
+
     res.send(req.user);
   });
 };
